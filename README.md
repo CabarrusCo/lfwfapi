@@ -52,3 +52,18 @@ If you are not using any auth on your API, simply spin up the client with nil in
 ```
 wfClient := lfwfapi.NewClient("http://WORKFLOWBASEURLHERE", nil) // Pass loginInfo
 ```
+
+### Retrieving all workflows on a server
+---
+To retrieve all workflows on a server, simply use the GetAllWorkflows method.
+
+```
+	grabAllWorkflows, err := wfClient.GetAllWorkflows()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	fmt.Printf("%+v", grabAllWorkflows)
+  
+```
