@@ -18,7 +18,7 @@ Our team is responsible for software development and support for the [County](ht
 
 ### About
 ---
-The LFWFAPI is a Laserfiche Workflow API wrapper written in Go. It currently has API functionality built in to
+The LFWFAPI is a minimal Laserfiche Workflow API wrapper written in Go. It currently has API functionality built in to
 
 1. Grab all workflows from the current workflow server
 2. Grab all parameters of a workflow
