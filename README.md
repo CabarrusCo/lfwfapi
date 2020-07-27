@@ -124,3 +124,5 @@ if err != nil {
 
 fmt.Println(runWorkflow)
 ```
+### More methods coming
+Here in this release we covered the main Three Methods. Retrieve all workflows, retrieve workflow parameters, and starting a workflow with parameters. We will add more minor methods in upcoming releases such as Queue workflow.
