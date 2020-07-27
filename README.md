@@ -16,6 +16,14 @@ The Business & Location Innovative Services (BLIS) team for Cabarrus County cons
 
 Our team is responsible for software development and support for the [County](https://www.cabarruscounty.us/departments/information-technology). We work under the direction of the Chief Information Officer.
 
+### About
+---
+The LFWFAPI is a Laserfiche Workflow API wrapper written in Go. It currently has API functionality built in to
+
+1. Grab all workflows from the current workflow server
+2. Grab all parameters of a workflow
+3. Start a workflow, with or without parameters passed to it.
+
 ### Installation
 ---
 ```
@@ -27,3 +35,6 @@ go get -u github.com/CabarrusCo/lfwfapi
 
 To get started with the Laserfiche API for Go, simply call it in a import
 ```
+import "github.com/CabarrusCo/lfwfapi
+```
+
