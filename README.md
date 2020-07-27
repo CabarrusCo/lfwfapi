@@ -30,11 +30,25 @@ The LFWFAPI is a Laserfiche Workflow API wrapper written in Go. It currently has
 go get -u github.com/CabarrusCo/lfwfapi
 ```
 
-### Usage
----
-
 To get started with the Laserfiche API for Go, simply call it in a import
 ```
-import "github.com/CabarrusCo/lfwfapi
+import "github.com/CabarrusCo/lfwfapi"
 ```
 
+### Making a new client
+---
+There are two ways to make a new API client, the first way is with NTLM auth, the second is without NTLM auth.
+
+To use NTLM auth, spin up your client using the lfwfapi Credentials struct.
+
+```
+loginInfo := lfwfapi.Credentials{Username: "xxxxx", Password: "xxxxxxx"}
+wfClient := lfwfapi.NewClient("http://WORKFLOWBASEURLHERE", &loginInfo) // Pass loginInfo
+```
+It is up to you store your credentials and retrieve them securely.
+
+If you are not using any auth on your API, simply spin up the client with nil in the Credentials.
+
+```
+wfClient := lfwfapi.NewClient("http://WORKFLOWBASEURLHERE", nil) // Pass loginInfo
+```
