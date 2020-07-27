@@ -50,7 +50,7 @@ It is up to you store your credentials and retrieve them securely.
 If you are not using any auth on your API, simply spin up the client with nil in the Credentials.
 
 ```
-wfClient := lfwfapi.NewClient("http://WORKFLOWBASEURLHERE", nil) // Pass loginInfo
+wfClient := lfwfapi.NewClient("http://WORKFLOWBASEURLHERE", nil) // Pass nil for no login
 ```
 
 ### Retrieving all workflows on a server
