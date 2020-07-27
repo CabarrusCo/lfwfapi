@@ -58,12 +58,12 @@ wfClient := lfwfapi.NewClient("http://WORKFLOWBASEURLHERE", nil) // Pass loginIn
 To retrieve all workflows on a server, simply use the GetAllWorkflows method.
 
 ```
-	grabAllWorkflows, err := wfClient.GetAllWorkflows()
-	if err != nil {
-		log.Println(err)
-		return
-	}
+grabAllWorkflows, err := wfClient.GetAllWorkflows()
+if err != nil {
+	log.Println(err)
+	return
+}
 
-	fmt.Printf("%+v", grabAllWorkflows)
+fmt.Printf("%+v", grabAllWorkflows)
   
 ```
