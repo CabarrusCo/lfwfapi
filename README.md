@@ -87,3 +87,41 @@ for _, v := range grabWorkflowParams {
 	fmt.Printf("Workflow Token Name: %s Workflow Token Tags: %s\n", v.TokenName, v.TokenTags)
 }
 ```
+
+### Running a Workflow
+---
+To run a workflow, call the StartWorkflow method. You can also pass parameters to this method by using []lfwfapi.Parameter{}.
+
+```
+wfParams := []lfwfapi.Parameter{
+	{
+		Name:  "Message",
+		Value: "Hello World!",
+	},
+	{
+		Name:  "Message Two",
+		Value: "I AM VARIABLE!",
+	},
+}
+
+runWorkflow, err := wfClient.StartWorkflow("WORKFLOW NAME HERE", wfParams)
+if err != nil {
+	log.Println(err)
+	return
+}
+
+fmt.Println(runWorkflow)
+```
+
+Additionally, if you just want to start a workflow with no parameters, pass nil to the StartWorkflow method
+```
+
+runWorkflow, err := wfClient.StartWorkflow("WORKFLOW NAME HERE", nil)
+if err != nil {
+	log.Println(err)
+	return
+}
+
+fmt.Println(runWorkflow)
+```
+
