@@ -16,3 +16,14 @@ The Business & Location Innovative Services (BLIS) team for Cabarrus County cons
 
 Our team is responsible for software development and support for the [County](https://www.cabarruscounty.us/departments/information-technology). We work under the direction of the Chief Information Officer.
 
+### Installation
+---
+```
+go get -u github.com/CabarrusCo/lfwfapi
+```
+
+### Usage
+---
+
+To get started with the Laserfiche API for Go, simply call it in a import
+```
