@@ -67,3 +67,23 @@ if err != nil {
 fmt.Printf("%+v", grabAllWorkflows)
   
 ```
+
+### Retrieving all workflow parameters
+---
+To retrieve all workflow parameters on a particular workflow, just pass in the name of the workflow to the method GetWorkflowParameters.
+
+```
+grabWorkflowParams, err := wfClient.GetWorkflowParameters("WORKFLOW NAME HERE")
+if err != nil {
+	log.Println(err)
+	return
+}
+
+fmt.Printf("%+v", grabWorkflowParams)
+
+for _, v := range grabWorkflowParams {
+	fmt.Println()
+	fmt.Println("--------------")
+	fmt.Printf("Workflow Token Name: %s Workflow Token Tags: %s\n", v.TokenName, v.TokenTags)
+}
+```
