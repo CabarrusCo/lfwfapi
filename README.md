@@ -54,7 +54,7 @@ wfClient := lfwfapi.NewClient("http://WORKFLOWBASEURLHERE", nil) // Pass nil for
 ```
 ### Using your own HTTP Client
 ---
-The basic API Client gives you it's own HTTP client, if you want to use your own for specific use cases, simply pass your custom HTTP Client to the API Client
+The API Client gives you it's own basic HTTP client, if you want to use your own for specific use cases, simply pass your custom HTTP Client to the API Client
 
 ```
 client := http.Client{
