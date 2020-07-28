@@ -2,6 +2,7 @@ package lfwfapi
 
 import (
 	"bytes"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -70,7 +71,9 @@ func NewClient(url string, c *Credentials) *client {
 		ntlmInfo: c,
 		httpClient: &http.Client{
 			Transport: ntlmssp.Negotiator{
-				RoundTripper: &http.Transport{},
+				RoundTripper: &http.Transport{
+					TLSNextProto: map[string]func(authority string, c *tls.Conn) http.RoundTripper{},
+				},
 			},
 		},
 	}
