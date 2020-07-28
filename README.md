@@ -100,7 +100,7 @@ wfParams := []lfwfapi.Parameter{
 	},
 	{
 		Name:  "Message Two",
-		Value: "I AM VARIABLE!",
+		Value: "I AM ANOTHER PARAMETER!",
 	},
 }
 
