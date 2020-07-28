@@ -2,7 +2,6 @@ package lfwfapi
 
 import (
 	"bytes"
-	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -62,18 +61,16 @@ type Credentials struct {
 type client struct {
 	baseURL    string
 	ntlmInfo   *Credentials
-	httpClient *http.Client
+	HttpClient *http.Client
 }
 
 func NewClient(url string, c *Credentials) *client {
 	return &client{
 		baseURL:  url,
 		ntlmInfo: c,
-		httpClient: &http.Client{
+		HttpClient: &http.Client{
 			Transport: ntlmssp.Negotiator{
-				RoundTripper: &http.Transport{
-					TLSNextProto: map[string]func(authority string, c *tls.Conn) http.RoundTripper{},
-				},
+				RoundTripper: &http.Transport{},
 			},
 		},
 	}
@@ -99,7 +96,7 @@ func (c client) GetAllWorkflows() ([]workflow, error) {
 	}
 	c.setReqInfo(req)
 
-	res, err := c.httpClient.Do(req)
+	res, err := c.HttpClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -132,7 +129,7 @@ func (c client) StartWorkflow(workflowName string, p []Parameter) (string, error
 	}
 	c.setReqInfo(req)
 
-	res, err := c.httpClient.Do(req)
+	res, err := c.HttpClient.Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -164,7 +161,7 @@ func (c client) GetWorkflowParameters(workflowName string) ([]workflowParameters
 	}
 	c.setReqInfo(req)
 
-	res, err := c.httpClient.Do(req)
+	res, err := c.HttpClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
