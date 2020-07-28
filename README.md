@@ -52,6 +52,22 @@ If you are not using any auth on your API, simply spin up the client with nil in
 ```
 wfClient := lfwfapi.NewClient("http://WORKFLOWBASEURLHERE", nil) // Pass nil for no login
 ```
+### Using your own HTTP Client
+---
+The basic API Client gives you it's own HTTP client, if you want to use your own for specific use cases, simply pass your custom HTTP Client to the API Client
+
+```
+client := http.Client{
+	Transport: ntlmssp.Negotiator{
+		RoundTripper: &http.Transport{
+			TLSNextProto: map[string]func(authority string, c *tls.Conn) http.RoundTripper{},
+		},
+	},
+}
+
+wfClient := lfwfapi.NewClient("http://BASEURLHERE", nil)
+wfClient.HttpClient = &client
+```
 
 ### Retrieving all workflows on a server
 ---
