@@ -65,6 +65,7 @@ client := http.Client{
 wfClient := lfwfapi.NewClient("http://WORKFLOWURLHERE")
 wfClient.HttpClient = &client
 ```
+It's up to you to store and retrieve your login credentials securely.
 
 ### Retrieving all workflows on a server
 ---
