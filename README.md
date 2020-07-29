@@ -46,7 +46,7 @@ wfClient := lfwfapi.NewClient("http://WORKFLOWURLHERE")
 ### Using NTLM Auth
 ---
 The package comes with no NTLM auth support baked in. If your workflow API uses NTLM auth, you can create your own Http Client that has NTLM auth and pass it to the created Workflow API client.
-A good package for handling NTLM auth can be found here https://github.com/vadimi/go-http-ntlm. An example is provided below
+A good package for handling NTLM auth can be found at https://github.com/vadimi/go-http-ntlm. An example is provided below
 
 ```
 client := http.Client{
