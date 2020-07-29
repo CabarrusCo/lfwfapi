@@ -35,37 +35,34 @@ To get started with the Laserfiche API for Go, simply call it in a import
 import "github.com/CabarrusCo/lfwfapi"
 ```
 
-### Making a new client
+### Spinning up a Client
 ---
-There are two ways to make a new API client, the first way is with NTLM auth, the second is without NTLM auth.
-
-To use NTLM auth, spin up your client using the lfwfapi Credentials struct.
+To spin up a basic client, call the lfwfapi.NewClient method, pass your base workflow URL to the NewClient as such
 
 ```
-loginInfo := lfwfapi.Credentials{Username: "xxxxx", Password: "xxxxxxx"}
-wfClient := lfwfapi.NewClient("http://WORKFLOWBASEURLHERE", &loginInfo) // Pass loginInfo
+wfClient := lfwfapi.NewClient("http://WORKFLOWURLHERE")
 ```
-It is up to you store your credentials and retrieve them securely.
 
-If you are not using any auth on your API, simply spin up the client with nil in the Credentials.
-
-```
-wfClient := lfwfapi.NewClient("http://WORKFLOWBASEURLHERE", nil) // Pass nil for no login
-```
-### Using your own HTTP Client
+### Using NTLM Auth
 ---
-The API Client gives you it's own basic HTTP client, if you want to use your own for specific use cases, simply pass your custom HTTP Client to the API Client
+The package comes with no NTLM auth on the HTTP. If your workflow API uses NTLM auth, you can create your own Http Client that has NTLM auth and pass it to the created Workflow API client.
+A good package for handling NTLM auth can be found here https://github.com/vadimi/go-http-ntlm. An example is provided below
 
 ```
 client := http.Client{
-	Transport: ntlmssp.Negotiator{
+	Transport: &httpntlm.NtlmTransport{
+		Domain:   "DOMAIN",
+		User:     "USERNAME",
+		Password: "PASSWORD",
+		// Configure RoundTripper if necessary, otherwise DefaultTransport is used
 		RoundTripper: &http.Transport{
-			TLSNextProto: map[string]func(authority string, c *tls.Conn) http.RoundTripper{},
+			// provide tls config
+			TLSClientConfig: &tls.Config{},
+			// other properties RoundTripper, see http.DefaultTransport
 		},
 	},
 }
-
-wfClient := lfwfapi.NewClient("http://BASEURLHERE", nil)
+wfClient := lfwfapi.NewClient("http://WORKFLOWURLHERE")
 wfClient.HttpClient = &client
 ```
 
