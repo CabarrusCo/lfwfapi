@@ -66,7 +66,6 @@ func NewClient(url string) *client {
 func setReqInfo(r *http.Request) {
 	r.Header.Set("Content-Type", "application/json")
 	r.Header.Set("Accept", "application/json")
-	r.Header.Set("Content-Type", "application/json")
 }
 
 func (c client) GetAllWorkflows() ([]workflow, error) {
