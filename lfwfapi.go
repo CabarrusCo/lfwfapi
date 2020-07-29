@@ -6,8 +6,6 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-
-	"github.com/Azure/go-ntlmssp"
 )
 
 type workflow struct {
@@ -53,36 +51,20 @@ type workflowParameters struct {
 	TokenTags     string   `json:"tokenTags"`
 }
 
-type Credentials struct {
-	Username string
-	Password string
-}
-
 type client struct {
 	baseURL    string
-	ntlmInfo   *Credentials
 	HttpClient *http.Client
 }
 
-func NewClient(url string, c *Credentials) *client {
+func NewClient(url string) *client {
 	return &client{
-		baseURL:  url,
-		ntlmInfo: c,
-		HttpClient: &http.Client{
-			Transport: ntlmssp.Negotiator{
-				RoundTripper: &http.Transport{},
-			},
-		},
+		baseURL:    url,
+		HttpClient: &http.Client{},
 	}
 }
 
-func (c client) setReqInfo(r *http.Request) {
+func setReqInfo(r *http.Request) {
 	r.Header.Set("Content-Type", "application/json")
-
-	if c.ntlmInfo != nil {
-		r.SetBasicAuth(c.ntlmInfo.Username, c.ntlmInfo.Password)
-	}
-
 	r.Header.Set("Accept", "application/json")
 	r.Header.Set("Content-Type", "application/json")
 }
@@ -94,7 +76,7 @@ func (c client) GetAllWorkflows() ([]workflow, error) {
 	if err != nil {
 		return nil, err
 	}
-	c.setReqInfo(req)
+	setReqInfo(req)
 
 	res, err := c.HttpClient.Do(req)
 	if err != nil {
@@ -127,7 +109,7 @@ func (c client) StartWorkflow(workflowName string, p []Parameter) (string, error
 	if err != nil {
 		return "", err
 	}
-	c.setReqInfo(req)
+	setReqInfo(req)
 
 	res, err := c.HttpClient.Do(req)
 	if err != nil {
@@ -159,7 +141,7 @@ func (c client) GetWorkflowParameters(workflowName string) ([]workflowParameters
 	if err != nil {
 		return nil, err
 	}
-	c.setReqInfo(req)
+	setReqInfo(req)
 
 	res, err := c.HttpClient.Do(req)
 	if err != nil {

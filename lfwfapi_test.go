@@ -7,8 +7,7 @@ import (
 
 func TestLFWorkflow(t *testing.T) {
 
-	loginInfo := Credentials{Username: "XXXXXXX", Password: "XXXXXX"}
-	wfClient := NewClient("http://WORKFLOWURLBASEHERE", &loginInfo) // nil if no login required
+	wfClient := NewClient("http://WORKFLOWURLBASEHERE")
 
 	getAllWorkflows, err := wfClient.GetAllWorkflows()
 	if err != nil {
