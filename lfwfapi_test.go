@@ -16,14 +16,14 @@ func TestLFWorkflow(t *testing.T) {
 		log.Printf("All workflows %+v", getAllWorkflows)
 	}
 
-	getWorkflowParameters, err := wfClient.GetWorkflowParameters("PayIT API Alert Blacklist")
+	getWorkflowParameters, err := wfClient.GetWorkflowParameters("Workflow Name Here")
 	if err != nil {
 		t.Errorf("Error encountered in Get Workflow Parameters %s", err)
 	} else {
 		log.Printf("All Workflow Parameters %+v", getWorkflowParameters)
 	}
 
-	runWorkflow, err := wfClient.StartWorkflow("Send Email From Web Service", nil)
+	runWorkflow, err := wfClient.StartWorkflow("Workflow Name Here", nil)
 	if err != nil {
 		t.Errorf("Error encounter in Run Workflow %s", err)
 	} else {
