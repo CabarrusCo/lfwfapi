@@ -12,6 +12,7 @@ The Business & Location Innovative Services (BLIS) team for Cabarrus County cons
 + Mark McIntyre - Software Developer
 + Landon Patterson - Software Developer
 + Brittany Yoder - Software Developer
++ Jared Poe - GIS Analyst
 + Marci Jones - Software Developer
 
 Our team is responsible for software development and support for the [County](https://www.cabarruscounty.us/departments/information-technology). We work under the direction of the Chief Information Officer.
