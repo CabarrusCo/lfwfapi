@@ -2,6 +2,7 @@ package lfwfapi
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -68,10 +69,10 @@ func setReqInfo(r *http.Request) {
 	r.Header.Set("Accept", "application/json")
 }
 
-func (c client) GetAllWorkflows() ([]workflow, error) {
+func (c client) GetAllWorkflows(ctx context.Context) ([]workflow, error) {
 	url := fmt.Sprintf("%s/Workflow/api/workflow", c.baseURL)
 
-	req, err := http.NewRequest("GET", url, nil)
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -95,7 +96,7 @@ func (c client) GetAllWorkflows() ([]workflow, error) {
 	return workflows, nil
 }
 
-func (c client) StartWorkflow(workflowName string, p []Parameter) (string, error) {
+func (c client) StartWorkflow(ctx context.Context, workflowName string, p []Parameter) (string, error) {
 	workflowNameEncoded := url.PathEscape(workflowName)
 	url := fmt.Sprintf("%s/Workflow/api/instances/%s", c.baseURL, workflowNameEncoded)
 
@@ -104,7 +105,7 @@ func (c client) StartWorkflow(workflowName string, p []Parameter) (string, error
 		return "", err
 	}
 
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(body))
+	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(body))
 	if err != nil {
 		return "", err
 	}
@@ -132,11 +133,11 @@ func (c client) StartWorkflow(workflowName string, p []Parameter) (string, error
 	return fmt.Sprintf("Workflow Started Successfully with Instance Id: %s", result.InstanceID), nil
 }
 
-func (c client) GetWorkflowParameters(workflowName string) ([]workflowParameters, error) {
+func (c client) GetWorkflowParameters(ctx context.Context, workflowName string) ([]workflowParameters, error) {
 	workflowNameEncoded := url.PathEscape(workflowName)
 	url := fmt.Sprintf("%s/Workflow/api/workflow/parameters/%s", c.baseURL, workflowNameEncoded)
 
-	req, err := http.NewRequest("GET", url, nil)
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
 		return nil, err
 	}
