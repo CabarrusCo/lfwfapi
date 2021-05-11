@@ -73,7 +73,7 @@ It's up to you to store and retrieve your login credentials securely.
 To retrieve all workflows on a server, simply use the GetAllWorkflows method.
 
 ```
-grabAllWorkflows, err := wfClient.GetAllWorkflows()
+grabAllWorkflows, err := wfClient.GetAllWorkflows(context.TODO())
 if err != nil {
 	log.Println(err)
 	return
@@ -88,7 +88,7 @@ fmt.Printf("%+v", grabAllWorkflows)
 To retrieve all workflow parameters on a particular workflow, just pass in the name of the workflow to the method GetWorkflowParameters.
 
 ```
-grabWorkflowParams, err := wfClient.GetWorkflowParameters("WORKFLOW NAME HERE")
+grabWorkflowParams, err := wfClient.GetWorkflowParameters(context.TODO(), "WORKFLOW NAME HERE")
 if err != nil {
 	log.Println(err)
 	return
@@ -119,7 +119,7 @@ wfParams := []lfwfapi.Parameter{
 	},
 }
 
-runWorkflow, err := wfClient.StartWorkflow("WORKFLOW NAME HERE", wfParams)
+runWorkflow, err := wfClient.StartWorkflow(context.TODO(), "WORKFLOW NAME HERE", wfParams)
 if err != nil {
 	log.Println(err)
 	return
@@ -131,7 +131,7 @@ fmt.Println(runWorkflow)
 Additionally, if you just want to start a workflow with no parameters, pass nil to the StartWorkflow method
 ```
 
-runWorkflow, err := wfClient.StartWorkflow("WORKFLOW NAME HERE", nil)
+runWorkflow, err := wfClient.StartWorkflow(context.TODO(), "WORKFLOW NAME HERE", nil)
 if err != nil {
 	log.Println(err)
 	return
