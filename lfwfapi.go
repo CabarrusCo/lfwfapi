@@ -9,7 +9,7 @@ import (
 	"net/url"
 )
 
-type workflow struct {
+type Workflow struct {
 	BpViewURL           string `json:"bpViewUrl"`
 	Description         string `json:"description"`
 	Flags               int    `json:"flags"`
@@ -32,7 +32,7 @@ type startWorkflowRequest struct {
 	ParameterCollection []Parameter `json:"ParameterCollection"`
 }
 
-type startWorkflowResponse struct {
+type StartWFResponse struct {
 	Fault      fault  `json:"fault"`
 	InstanceID string `json:"instanceId"`
 }
@@ -64,99 +64,72 @@ func NewClient(url string) *client {
 	}
 }
 
-func setReqInfo(r *http.Request) {
+func (c *client) Send(r *http.Request, v interface{}) error {
 	r.Header.Set("Content-Type", "application/json")
 	r.Header.Set("Accept", "application/json")
-}
 
-func (c client) GetAllWorkflows(ctx context.Context) ([]workflow, error) {
-	url := fmt.Sprintf("%s/Workflow/api/workflow", c.baseURL)
-
-	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	res, err := c.HttpClient.Do(r)
 	if err != nil {
-		return nil, err
-	}
-	setReqInfo(req)
-
-	res, err := c.HttpClient.Do(req)
-	if err != nil {
-		return nil, err
+		return err
 	}
 	defer res.Body.Close()
 
-	if res.StatusCode != 200 {
-		return nil, fmt.Errorf("Expected Status Code 200, Got Status Code %v instead", res.StatusCode)
+	if res.StatusCode < 200 || res.StatusCode > 299 {
+		return fmt.Errorf("Error encountered on %v. Got status code %v", r.URL, res.StatusCode)
 	}
 
-	workflows := []workflow{}
-	err = json.NewDecoder(res.Body).Decode(&workflows)
-	if err != nil {
-		return nil, err
-	}
-	return workflows, nil
+	return json.NewDecoder(res.Body).Decode(v)
 }
 
-func (c client) StartWorkflow(ctx context.Context, workflowName string, p []Parameter) (string, error) {
-	workflowNameEncoded := url.PathEscape(workflowName)
-	url := fmt.Sprintf("%s/Workflow/api/instances/%s", c.baseURL, workflowNameEncoded)
-
-	body, err := json.Marshal(startWorkflowRequest{p})
+func (c *client) GetAllWorkflows(ctx context.Context) ([]Workflow, error) {
+	r, err := http.NewRequestWithContext(ctx, "GET", fmt.Sprintf("%v/workflow/api/workflow", c.baseURL), nil)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	req, err := http.NewRequestWithContext(ctx, "POST", url, bytes.NewBuffer(body))
+	w := []Workflow{}
+
+	err = c.Send(r, &w)
 	if err != nil {
-		return "", err
-	}
-	setReqInfo(req)
-
-	res, err := c.HttpClient.Do(req)
-	if err != nil {
-		return "", err
-	}
-	defer res.Body.Close()
-
-	if res.StatusCode != 200 {
-		return "", fmt.Errorf("Expected Status Code 200, Got Status Code %v instead", res.StatusCode)
+		return nil, err
 	}
 
-	result := startWorkflowResponse{}
-	err = json.NewDecoder(res.Body).Decode(&result)
-	if err != nil {
-		return "", err
-	}
-
-	if result.Fault.Status != 0 {
-		return "", fmt.Errorf("Problem Starting Workflow: %s", result.Fault.Detail)
-	}
-	return fmt.Sprintf("Workflow Started Successfully with Instance Id: %s", result.InstanceID), nil
+	return w, nil
 }
 
-func (c client) GetWorkflowParameters(ctx context.Context, workflowName string) ([]workflowParameters, error) {
-	workflowNameEncoded := url.PathEscape(workflowName)
-	url := fmt.Sprintf("%s/Workflow/api/workflow/parameters/%s", c.baseURL, workflowNameEncoded)
+func (c *client) StartWorkflow(ctx context.Context, wfname string, p []Parameter) (StartWFResponse, error) {
+	s := StartWFResponse{}
 
-	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	b, err := json.Marshal(startWorkflowRequest{p})
+	if err != nil {
+		return s, err
+	}
+
+	r, err := http.NewRequestWithContext(ctx, "POST", fmt.Sprintf("%v/Workflow/api/instances/%v", c.baseURL, url.PathEscape(wfname)), bytes.NewBuffer(b))
+	if err != nil {
+		return s, err
+	}
+
+	err = c.Send(r, &s)
+	if err != nil {
+		return s, err
+	}
+
+	return s, nil
+}
+
+func (c *client) GetWorkflowParameters(ctx context.Context, wfname string) ([]workflowParameters, error) {
+	r, err := http.NewRequestWithContext(ctx, "POST", fmt.Sprintf("%v/Workflow/api/workflow/parameters/%v", c.baseURL, url.PathEscape(wfname)), nil)
 	if err != nil {
 		return nil, err
 	}
-	setReqInfo(req)
 
-	res, err := c.HttpClient.Do(req)
+	w := []workflowParameters{}
+
+	err = c.Send(r, &w)
 	if err != nil {
 		return nil, err
 	}
-	defer res.Body.Close()
 
-	if res.StatusCode != 200 {
-		return nil, fmt.Errorf("Expected Status Code 200, Got Status Code %v instead", res.StatusCode)
-	}
-
-	wfParams := []workflowParameters{}
-	err = json.NewDecoder(res.Body).Decode(&wfParams)
-	if err != nil {
-		return nil, err
-	}
-	return wfParams, nil
+	return w, nil
 }
