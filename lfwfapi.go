@@ -119,7 +119,7 @@ func (c *client) StartWorkflow(ctx context.Context, wfname string, p []Parameter
 }
 
 func (c *client) GetWorkflowParameters(ctx context.Context, wfname string) ([]workflowParameters, error) {
-	r, err := http.NewRequestWithContext(ctx, "POST", fmt.Sprintf("%v/Workflow/api/workflow/parameters/%v", c.baseURL, url.PathEscape(wfname)), nil)
+	r, err := http.NewRequestWithContext(ctx, "GET", fmt.Sprintf("%v/Workflow/api/workflow/parameters/%v", c.baseURL, url.PathEscape(wfname)), nil)
 	if err != nil {
 		return nil, err
 	}
