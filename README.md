@@ -11,7 +11,7 @@ The Business & Location Innovative Services (BLIS) team for Cabarrus County cons
 + Joseph Battinelli - Team Supervisor
 + Mark McIntyre - Software Developer
 + Landon Patterson - Software Developer
-+ Brittany Yoder - Software Developer
++ Aldair Balanzar - Software Developer
 + Jared Poe - GIS Analyst
 + Marci Jones - Software Developer
 
@@ -55,12 +55,6 @@ client := http.Client{
 		Domain:   "DOMAIN",
 		User:     "USERNAME",
 		Password: "PASSWORD",
-		// Configure RoundTripper if necessary, otherwise DefaultTransport is used
-		RoundTripper: &http.Transport{
-			// provide tls config
-			TLSClientConfig: &tls.Config{},
-			// other properties RoundTripper, see http.DefaultTransport
-		},
 	},
 }
 wfClient := lfwfapi.NewClient("http://WORKFLOWURLHERE")
@@ -125,7 +119,7 @@ if err != nil {
 	return
 }
 
-fmt.Println(runWorkflow)
+fmt.Printf("%+v", runWorkflow)
 ```
 
 Additionally, if you just want to start a workflow with no parameters, pass nil to the StartWorkflow method
@@ -137,7 +131,5 @@ if err != nil {
 	return
 }
 
-fmt.Println(runWorkflow)
+fmt.Printf("%+v", runWorkflow)
 ```
-### More methods coming
-Here in this release we covered the main Three Methods. Retrieve all workflows, retrieve workflow parameters, and starting a workflow with parameters. We will add more minor methods in upcoming releases such as Queue workflow.
